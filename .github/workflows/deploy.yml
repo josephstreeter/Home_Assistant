@@ -20,6 +20,7 @@ jobs:
           cd /home/docker/homeassistant
           cp $GITHUB_WORKSPACE/docker-compose.yml ./
           cp $GITHUB_WORKSPACE/homeassistant/configuration.yaml ./homeassistant/configuration.yaml
+          cp -r $GITHUB_WORKSPACE/homeassistant/includes ./homeassistant/
           cp $GITHUB_WORKSPACE/mosquitto/mosquitto.conf ./mosquitto/mosquitto.conf
           docker-compose up -d
         shell: bash

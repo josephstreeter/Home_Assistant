@@ -183,6 +183,26 @@ This repository includes a GitHub Actions workflow (`.github/workflows/deploy.ym
 - **Process**: Copies configuration files and restarts the Docker stack
 - **Verification**: Checks deployment status after completion
 
+#### Workflow Details
+
+The deployment workflow performs the following steps:
+
+1. **Repository Checkout**: Uses `actions/checkout@v4` to pull the latest code from the main branch
+2. **File Synchronization**: Copies updated files from the GitHub workspace to the Docker host:
+   - `docker-compose.yml` - Main Docker Compose configuration
+   - `homeassistant/configuration.yaml` - Home Assistant main configuration
+   - `homeassistant/includes/` - Complete includes directory with all modular configurations
+   - `mosquitto/mosquitto.conf` - Mosquitto MQTT broker configuration (legacy)
+3. **Stack Deployment**: Executes `docker-compose up -d` to update and restart containers with zero-downtime deployment
+4. **Verification**: Runs `docker-compose ps` to verify all services are running correctly
+
+#### Prerequisites
+
+- **Self-hosted Runner**: Configured with access to the target Docker host
+- **Directory Structure**: Runner must have access to `/home/docker/homeassistant/` deployment directory
+- **Docker Access**: Runner user must have Docker permissions for container management
+- **Network Access**: Runner needs connectivity to Docker daemon and container registry
+
 ### Manual Deployment
 
 1. Ensure Docker and Docker Compose are installed.
