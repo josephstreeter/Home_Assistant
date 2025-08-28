@@ -1,0 +1,25 @@
+# This file contains Home Assistant input_select entities.
+# Define input_select helpers here - dropdown lists that allow users to choose from predefined options.
+# These are useful for creating user interfaces, automation conditions, and storing state selections.
+# Input selects can be used in dashboards, automations, and scripts to provide selectable options.
+#
+# Example input_select configuration (commented out):
+#
+# house_mode:
+#   name: "House Mode"
+#   options:
+#     - Home
+#     - Away
+#     - Sleep
+#     - Vacation
+#   initial: Home
+#   icon: mdi:home-variant
+#
+# thermostat_preset:
+#   name: "Thermostat Preset"
+#   options:
+#     - "Comfort"
+#     - "Energy Saving"
+#     - "Manual"
+#   initial: "Comfort"
+#   icon: mdi:thermostat

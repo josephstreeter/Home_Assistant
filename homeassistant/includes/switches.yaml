@@ -1,0 +1,15 @@
+# This file contains Home Assistant switch entities.
+# Define switches here, such as those for smart plugs, relays, or other controllable devices.
+# Use integrations like MQTT, template, or platform-specific switches.
+#
+# Example switch configuration (commented out):
+#
+# - platform: mqtt
+#   name: "Desk Lamp"
+#   state_topic: "home/desk_lamp/state"
+#   command_topic: "home/desk_lamp/set"
+#   payload_on: "ON"
+#   payload_off: "OFF"
+#   availability_topic: "home/desk_lamp/availability"
+#   payload_available: "online"
+#   payload_not_available: "offline"

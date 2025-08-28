@@ -1,50 +1,26 @@
-# Enable System Monitor
-# enable_system_monitor:
-#   alias: "Enable System Monitor"
-#   description: "Enables all entities in the system monitor integration and adds the integration if not present"
+
+# This file contains Home Assistant script entities.
+# Define scripts here - sequences of actions that can be triggered manually or by automations.
+# Scripts can include service calls, delays, conditions, and complex logic.
+# Use scripts to create reusable sequences of actions for common tasks.
+#
+# Example script configuration (commented out):
+#
+# example_script:
+#   alias: "Example Script"
+#   description: "An example script that turns on lights and sends a notification"
 #   sequence:
-#     - service: homeassistant.reload_config_entry
-#       data:
-#         entry_id: >
-#           {{
-#             config_entries
-#             | selectattr('domain', 'eq', 'systemmonitor')
-#             | map(attribute='entry_id')
-#             | first
-#             | default(none)
-#           }}
-#       continue_on_error: true
-#     - if:
-#         - condition: template
-#           value_template: >
-#             {{
-#               config_entries
-#               | selectattr('domain', 'eq', 'systemmonitor')
-#               | list
-#               | length == 0
-#             }}
-#       then:
-#         - service: notify.persistent_notification
-#           data:
-#             title: "System Monitor Integration Required"
-#             message: "System Monitor integration not found. Please add the System Monitor integration manually through Settings > Devices & Services > Add Integration."
-#         - service: homeassistant.add_integration
-#           data:
-#             domain: systemmonitor
-#         - delay: "00:00:10"
-#     - service: homeassistant.turn_on
+#     - service: light.turn_on
 #       target:
-#         entity_id: >
-#           {{
-#             states
-#             | selectattr('entity_id', 'match', '^sensor\.(processor_use|memory_use_percent|disk_use_percent|network_in|network_out|last_boot|load_1m|load_5m|load_15m)')
-#             | map(attribute='entity_id')
-#             | list
-#           }}
+#         entity_id: light.living_room
+#       data:
+#         brightness: 255
+#         color_name: "blue"
+#     - delay: "00:00:02"
 #     - service: notify.persistent_notification
 #       data:
-#         title: "System Monitor Enabled"
-#         message: "System monitor integration checked and all entities enabled at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+#         title: "Script Executed"
+#         message: "Example script completed at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
 
 enable_system_monitor:
   alias: "Enable System Monitor"

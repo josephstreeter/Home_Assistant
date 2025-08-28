@@ -1,3 +1,20 @@
+# This file contains Home Assistant input_boolean entities.
+# Define input_boolean helpers here - toggleable switches that can be controlled manually or by automations.
+# These are useful for creating on/off controls, mode switches, and boolean state tracking.
+# Input booleans can be used in dashboards, conditions, and automation triggers.
+#
+# Example input_boolean configuration (commented out):
+#
+# example_toggle:
+#   name: "Example Toggle Switch"
+#   icon: mdi:toggle-switch
+#   initial: false
+#
+# automation_control:
+#   name: "Enable Automation"
+#   icon: mdi:robot
+#   initial: true
+
 # Input Booleans for Home Assistant
 # These provide toggleable switches for automations
 

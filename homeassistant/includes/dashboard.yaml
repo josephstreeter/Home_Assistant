@@ -1,0 +1,29 @@
+# This file contains Home Assistant dashboard configurations.
+# Define custom dashboards here using the dashboard YAML syntax.
+# Dashboards allow you to create custom user interfaces with cards, views, and layouts.
+# You can create multiple views, organize cards, and customize the appearance of your Home Assistant interface.
+#
+# Example dashboard configuration (commented out):
+#
+# title: "Example Dashboard"
+# views:
+#   - title: "Home"
+#     path: "home"
+#     icon: mdi:home
+#     cards:
+#       - type: entities
+#         title: "Quick Controls"
+#         entities:
+#           - light.living_room
+#           - switch.fan
+#           - climate.thermostat
+#       - type: weather-forecast
+#         entity: weather.home
+#       - type: gauge
+#         entity: sensor.temperature
+#         min: 0
+#         max: 100
+#         severity:
+#           green: 0
+#           yellow: 60
+#           red: 80

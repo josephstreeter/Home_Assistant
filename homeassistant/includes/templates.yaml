@@ -1,18 +1,19 @@
-# Climate Control Sensors
-# "Window Recommendation"
+# This file contains Home Assistant template sensors and binary sensors.
+# Use this file to define template-based entities, such as sensors and binary sensors,
+# whose state, attributes, or availability are determined by Jinja2 templates.
+# Example templates are provided below (commented out).
+# Add your own template entities following the examples.
 
-# HVAC Efficiency Alerts
-# "AC On and Door or Window Open"
-# "Heating On and Door or Window Open"
-# "Humidity High Inside"
-# "Humidity Low Inside"
-# "Humidity High Outside"
-
-# Enhanced Window and Door Status
-# "Any Window Open"
-# "Any Door Open"
-
-# Air Quality and Ventilation
+# Example Home Assistant template (commented out)
+#
+# - sensor:
+#     - name: "Living Room Temperature"
+#       state: >
+#         {{ states('sensor.living_room_temp') }}
+#       unit_of_measurement: "°C"
+#       attributes:
+#         friendly_name: "Living Room Temperature"
+#         device_class:
 
 # Binary sensor for weather alerts
 - binary_sensor:

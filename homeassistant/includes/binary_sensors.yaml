@@ -1,0 +1,24 @@
+# This file contains Home Assistant binary sensor entities.
+# Define binary sensors here - sensors that have only two states: on/off, true/false, detected/not detected.
+# Binary sensors are used for motion detection, door/window sensors, presence detection, and state monitoring.
+# Use integrations like MQTT, template, or platform-specific binary sensors for various monitoring devices.
+#
+# Example binary sensor configuration (commented out):
+#
+# - platform: mqtt
+#   name: "Front Door"
+#   state_topic: "home/front_door/state"
+#   payload_on: "OPEN"
+#   payload_off: "CLOSED"
+#   device_class: door
+#   availability_topic: "home/front_door/availability"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#
+# - platform: template
+#   sensors:
+#     high_temperature_alert:
+#       friendly_name: "High Temperature Alert"
+#       device_class: problem
+#       value_template: "{{ states('sensor.temperature') | float > 85 }}"
+#       availability_template: "{{ states('sensor.temperature') not in ['unknown', 'unavailable'] }}"
