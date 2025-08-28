@@ -1,0 +1,64 @@
+- id: test_automation_sample
+  alias: 'Test: Sample Automation'
+  description: A simple test automation that sends a notification every 30 minutes
+  trigger:
+    - platform: time_pattern
+      minutes: '/30'
+  condition: []
+  action:
+    - service: persistent_notification.create
+      data:
+        title: "Test Automation"
+        message: "This is a test notification sent at {{ now().strftime('%H:%M:%S') }}"
+        notification_id: "test_automation"
+  mode: single
+
+- id: evening_sunset_lighting
+  alias: 'Evening: Sunset Lighting'
+  description: Turn on evening lights at sunset with appropriate brightness
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: -00:15:00
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.auto_lights
+      state: 'on'
+  action:
+    - service: scene.turn_on
+      target:
+        entity_id: scene.evening_dusk_to_dawn_lighting
+    - service: persistent_notification.create
+      data:
+        message: Evening lights activated at sunset
+        title: Home Automation
+        notification_id: sunset_lights
+  mode: single
+
+- id: morning_sunrise_lights_off
+  alias: 'Morning: Sunrise Lights Off'
+  description: Turn off evening lights at sunrise
+  trigger:
+    - platform: sun
+      event: sunrise
+      offset: 00:30:00
+  condition:
+    - condition: state
+      entity_id: input_boolean.vacation_mode
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.auto_lights
+      state: 'on'
+  action:
+    - service: scene.turn_off
+      target:
+        entity_id: scene.evening_dusk_to_dawn_lighting
+    - service: persistent_notification.create
+      data:
+        message: Morning lights turned off at sunrise
+        title: Home Automation
+        notification_id: sunrise_lights
+  mode: single  

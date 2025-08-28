@@ -1,0 +1,67 @@
+views:
+  - title: Setup Guide
+    path: setup-guide
+    icon: mdi:information
+    cards:
+      - type: markdown
+        content: |
+          ## 🛠️ System Monitor Integration Setup
+              
+          - Go to Home Assistant Settings -> Devices & Services -> Integrations.
+          - Click **"Add Integration"** and search for **"System Monitor"**.
+          - Add the integration and configure the following entities:
+            - `sensor.system_monitor_disk_free`
+            - `sensor.system_monitor_disk_free_config_includes`
+            - `sensor.system_monitor_disk_free_config`
+            - `sensor.system_monitor_disk_use_config_includes`
+            - `sensor.system_monitor_disk_use`
+            - `sensor.system_monitor_disk_use_config`
+            - `sensor.system_monitor_disk_usage_config_includes`
+            - `sensor.system_monitor_disk_usage`
+            - `sensor.system_monitor_disk_usage_config`
+            - `sensor.system_monitor_last_boot`
+            - `sensor.system_monitor_load_15m`
+            - `sensor.system_monitor_load_1m`
+            - `sensor.system_monitor_load_5m`
+            - `sensor.system_monitor_memory_free`
+            - `sensor.system_monitor_memory_use`
+            - `sensor.system_monitor_memory_usage`
+            - `sensor.system_monitor_processor_use`
+            - `sensor.system_monitor_processor_temperature`
+            - `sensor.system_monitor_swap_free`
+            - `sensor.system_monitor_swap_use`
+            - `sensor.system_monitor_swap_usage`
+          - Save and reload your configuration.
+
+      - type: markdown
+        content: >-
+          ## ⚡ Enable Entities for Automation-Control Dashboard
+
+          Make sure the following entities are enabled and available:
+            - `input_boolean.vacation_mode`
+            - `input_boolean.guest_mode`
+            - `input_boolean.sleep_mode`
+            - `input_boolean.auto_lights`
+            - `input_number.sunrise_offset`
+            - `input_number.sunset_offset`
+            - `input_boolean.security_monitoring`
+            - `input_boolean.motion_lights`
+            - `input_number.motion_timeout`
+            - `input_number.door_alert_delay`
+            - `input_boolean.door_alerts`
+            - `input_boolean.window_alerts`
+            - `input_boolean.auto_climate`
+            - `input_number.temperature_comfort_max`
+            - `input_number.temperature_comfort_min`
+            - `input_number.humidity_threshold`
+            - `input_number.humidity_low_threshold`
+            - `input_boolean.weather_alerts`
+
+          ## 💡 Tips
+            - Use **Helpers** in Home Assistant to create input booleans and numbers.
+            - After adding or enabling entities, restart Home Assistant to apply changes.
+            - All entities above are referenced by the Automation Control Dashboard for full functionality.
+
+        
+
+

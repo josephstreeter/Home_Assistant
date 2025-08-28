@@ -1,0 +1,47 @@
+blueprint:
+  name: Morning Sunrise Lights Off
+  description: Turn off evening lights at sunrise
+  domain: automation
+  input:
+    vacation_mode:
+      name: Vacation Mode Boolean
+      selector:
+        entity:
+          domain: input_boolean
+    auto_lights:
+      name: Auto Lights Boolean
+      selector:
+        entity:
+          domain: input_boolean
+    lights_target:
+      name: Lights to Turn Off
+      selector:
+        entity:
+          domain: light
+          multiple: true
+    notification_target:
+      name: Notification Service
+      selector:
+        entity:
+          domain: notify
+trigger:
+  - platform: sun
+    event: sunrise
+    offset: 00:30:00
+condition:
+  - condition: state
+    entity_id: !input vacation_mode
+    state: 'off'
+  - condition: state
+    entity_id: !input auto_lights
+    state: 'on'
+action:
+  - service: light.turn_off
+    target:
+      entity_id: !input lights_target
+  - service: !input notification_target
+    data:
+      message: Morning lights turned off at sunrise
+      title: Home Automation
+      notification_id: sunrise_lights
+mode: single

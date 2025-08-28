@@ -1,0 +1,186 @@
+# Enable System Monitor
+# enable_system_monitor:
+#   alias: "Enable System Monitor"
+#   description: "Enables all entities in the system monitor integration and adds the integration if not present"
+#   sequence:
+#     - service: homeassistant.reload_config_entry
+#       data:
+#         entry_id: >
+#           {{
+#             config_entries
+#             | selectattr('domain', 'eq', 'systemmonitor')
+#             | map(attribute='entry_id')
+#             | first
+#             | default(none)
+#           }}
+#       continue_on_error: true
+#     - if:
+#         - condition: template
+#           value_template: >
+#             {{
+#               config_entries
+#               | selectattr('domain', 'eq', 'systemmonitor')
+#               | list
+#               | length == 0
+#             }}
+#       then:
+#         - service: notify.persistent_notification
+#           data:
+#             title: "System Monitor Integration Required"
+#             message: "System Monitor integration not found. Please add the System Monitor integration manually through Settings > Devices & Services > Add Integration."
+#         - service: homeassistant.add_integration
+#           data:
+#             domain: systemmonitor
+#         - delay: "00:00:10"
+#     - service: homeassistant.turn_on
+#       target:
+#         entity_id: >
+#           {{
+#             states
+#             | selectattr('entity_id', 'match', '^sensor\.(processor_use|memory_use_percent|disk_use_percent|network_in|network_out|last_boot|load_1m|load_5m|load_15m)')
+#             | map(attribute='entity_id')
+#             | list
+#           }}
+#     - service: notify.persistent_notification
+#       data:
+#         title: "System Monitor Enabled"
+#         message: "System monitor integration checked and all entities enabled at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
+enable_system_monitor:
+  alias: "Enable System Monitor"
+  description: "Enables all System Monitor entities used in the automation-control dashboard"
+  sequence:
+    - if:
+        - condition: template
+          value_template: >
+            {{
+              config_entries
+              | selectattr('domain', 'eq', 'systemmonitor')
+              | list
+              | length == 0
+            }}
+      then:
+        - service: homeassistant.reload_config_entry
+          data:
+            entry_id: >
+              {{
+                config_entries
+                | selectattr('domain', 'eq', 'systemmonitor')
+                | map(attribute='entry_id')
+                | first
+              }}
+          continue_on_error: true
+        - delay: "00:00:05"
+        - service: homeassistant.turn_on
+          target:
+            entity_id: >
+              {{
+                states
+                | selectattr('entity_id', 'match', '^sensor\.(processor_use|memory_use_percent|disk_use_percent|network_in|network_out|last_boot|load_1m|load_5m|load_15m)')
+                | map(attribute='entity_id')
+                | list
+              }}
+          continue_on_error: true
+        - service: notify.persistent_notification
+          data:
+            title: "System Monitor Enabled"
+            message: "System monitor integration checked and all entities enabled at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+      else:
+        - service: notify.persistent_notification
+          data:
+            title: "System Monitor Integration Required"
+            message: "System Monitor integration not found. Please add the System Monitor integration manually through Settings > Devices & Services > Add Integration."
+
+startup_routine:
+  alias: "Startup Routine"
+  description: "Executes various tasks when Home Assistant starts up"
+  sequence:
+    - service: homeassistant.update_entity
+      target:
+        entity_id: all
+    - service: notify.persistent_notification
+      data:
+        title: "Home Assistant Started"
+        message: "System startup complete at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+    - delay: "00:00:05"
+    - service: script.turn_on
+      target:
+        entity_id: script.check_system_status
+        
+bedtime_routine:
+  alias: "Bedtime Routine"
+  description: "Executes various tasks for bedtime preparation"
+  sequence:
+    - service: light.turn_off
+      target:
+        area_id: all
+    - service: media_player.turn_off
+      target:
+        entity_id: all
+    - service: climate.set_temperature
+      target:
+        entity_id: all
+      data:
+        temperature: 68
+    - service: lock.lock
+      target:
+        entity_id: all
+    - service: alarm_control_panel.alarm_arm_night
+      target:
+        entity_id: all
+    - service: notify.persistent_notification
+      data:
+        title: "Bedtime Routine Complete"
+        message: "Good night! Bedtime routine executed at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
+away_mode:
+  alias: "Away Mode"
+  description: "Activates away mode when leaving home"
+  sequence:
+    - service: light.turn_off
+      target:
+        entity_id: all
+    - service: media_player.turn_off
+      target:
+        entity_id: all
+    - service: climate.set_temperature
+      target:
+        entity_id: all
+      data:
+        temperature: 65
+    - service: lock.lock
+      target:
+        entity_id: all
+    - service: alarm_control_panel.alarm_arm_away
+      target:
+        entity_id: all
+    - service: notify.persistent_notification
+      data:
+        title: "Away Mode Activated"
+        message: "House secured for away mode at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+
+welcome_home:
+  alias: "Welcome Home"
+  description: "Executes various tasks when arriving home"
+  sequence:
+    - service: light.turn_on
+      target:
+        area_id: all
+    - service: media_player.turn_on
+      target:
+        entity_id: all
+    - service: climate.set_temperature
+      target:
+        entity_id: all
+      data:
+        temperature: 72
+    - service: lock.unlock
+      target:
+        entity_id: all
+    - service: alarm_control_panel.alarm_disarm
+      target:
+        entity_id: all
+    - service: notify.persistent_notification
+      data:
+        title: "Welcome Home"
+        message: "Welcome back! Home sweet home at {{ now().strftime('%Y-%m-%d %H:%M:%S') }}"

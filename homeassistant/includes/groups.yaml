@@ -1,0 +1,34 @@
+# Groups for Home Assistant
+# These organize entities for easier management and automation
+
+# All Lights
+
+
+# All Livingroom Lights
+
+# All Kitchen Lights
+
+# All Windows (update with your actual window sensor entities)
+
+# All Doors (update with your actual door sensor entities)
+
+# Temperature Sensors
+
+# Humidity Sensors
+
+# Security Sensors
+
+# Outdoor Sensors
+
+# Automation Controls
+
+# System Modes
+system_modes:
+  name: "System Modes"
+  icon: mdi:cog
+  entities:
+    - input_boolean.vacation_mode
+    - input_boolean.guest_mode
+    - input_boolean.sleep_mode
+    - input_boolean.energy_saving_mode
+    - input_boolean.maintenance_mode

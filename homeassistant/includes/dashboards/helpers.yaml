@@ -1,0 +1,25 @@
+views:
+  - title: Helpers
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: New section
+          - type: entities
+            entities:
+              - input_boolean.auto_climate
+              - input_boolean.auto_lights
+              - input_number.temperature_comfort_max
+              - input_number.temperature_comfort_min
+              - input_number.door_alert_delay
+              - input_boolean.door_alerts
+              - input_number.humidity_threshold
+              - input_number.humidity_low_threshold
+              - input_boolean.motion_lights
+              - input_number.motion_timeout
+              - input_boolean.security_monitoring
+              - input_number.sunrise_offset
+              - input_number.sunset_offset
+              - input_boolean.weather_alerts
+              - input_boolean.window_alerts
+            title: Helpers

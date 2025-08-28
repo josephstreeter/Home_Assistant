@@ -1,0 +1,46 @@
+blueprint:
+  name: Evening Sunset Lighting
+  description: Turn on evening lights at sunset with appropriate brightness
+  domain: automation
+  input:
+    vacation_mode:
+      name: Vacation Mode Boolean
+      selector:
+        entity:
+          domain: input_boolean
+    auto_lights:
+      name: Auto Lights Boolean
+      selector:
+        entity:
+          domain: input_boolean
+    scene_target:
+      name: Scene to Activate
+      selector:
+        entity:
+          domain: scene
+    notification_target:
+      name: Notification Service
+      selector:
+        entity:
+          domain: notify
+trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:15:00
+condition:
+  - condition: state
+    entity_id: !input vacation_mode
+    state: 'off'
+  - condition: state
+    entity_id: !input auto_lights
+    state: 'on'
+action:
+  - service: scene.turn_on
+    target:
+      entity_id: !input scene_target
+  - service: !input notification_target
+    data:
+      message: Evening lights activated at sunset
+      title: Home Automation
+      notification_id: sunset_lights
+mode: single

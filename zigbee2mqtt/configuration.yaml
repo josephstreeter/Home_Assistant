@@ -1,0 +1,70 @@
+version: 4
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://192.168.129.154:1883
+serial:
+  port: /dev/ttyUSB0
+  adapter: zstack
+  baudrate: 115200
+  rtscts: false
+advanced:
+  log_level: info
+  channel: 11
+  network_key:
+    - 138
+    - 10
+    - 187
+    - 191
+    - 37
+    - 73
+    - 110
+    - 43
+    - 144
+    - 17
+    - 164
+    - 17
+    - 9
+    - 238
+    - 76
+    - 240
+  pan_id: 8105
+  ext_pan_id:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+frontend:
+  enabled: true
+  port: 8080
+homeassistant:
+  enabled: true
+onboarding: false
+devices:
+  '0x00158d00083a2598':
+    friendly_name: '0x00158d00083a2598'
+  '0x00158d00083a286c':
+    friendly_name: '0x00158d00083a286c'
+  '0x00158d000839a788':
+    friendly_name: '0x00158d000839a788'
+  '0x00158d00083982a8':
+    friendly_name: '0x00158d00083982a8'
+  '0x00158d00089524ea':
+    friendly_name: '0x00158d00089524ea'
+  '0x00124b002513765d':
+    friendly_name: '0x00124b002513765d'
+  '0x00158d0008398442':
+    friendly_name: '0x00158d0008398442'
+  '0x00158d000839847f':
+    friendly_name: '0x00158d000839847f'
+  '0x00158d000839a7a0':
+    friendly_name: '0x00158d000839a7a0'
+  '0x00158d000839a7e9':
+    friendly_name: '0x00158d000839a7e9'
+  '0x00158d0007f01127':
+    friendly_name: '0x00158d0007f01127'
+  '0x00158d0008398483':
+    friendly_name: '0x00158d0008398483'

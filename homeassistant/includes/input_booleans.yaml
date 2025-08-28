@@ -1,0 +1,68 @@
+# Input Booleans for Home Assistant
+# These provide toggleable switches for automations
+
+# System Modes
+vacation_mode:
+  name: "Vacation Mode"
+  icon: mdi:airplane
+  initial: false
+
+guest_mode:
+  name: "Guest Mode"
+  icon: mdi:account-multiple
+  initial: false
+
+sleep_mode:
+  name: "Sleep Mode"
+  icon: mdi:sleep
+  initial: false
+
+# Automation Controls
+auto_lights:
+  name: "Automatic Lighting"
+  icon: mdi:lightbulb-auto
+  initial: true
+
+auto_climate:
+  name: "Automatic Climate Control"
+  icon: mdi:thermostat-auto
+  initial: true
+
+motion_lights:
+  name: "Motion Activated Lights"
+  icon: mdi:motion-sensor
+  initial: true
+
+# Security Features
+security_monitoring:
+  name: "Security Monitoring"
+  icon: mdi:security
+  initial: true
+
+door_alerts:
+  name: "Door Open Alerts"
+  icon: mdi:door-open
+  initial: true
+
+window_alerts:
+  name: "Window Open Alerts"
+  icon: mdi:window-open
+  initial: true
+
+# Weather Alerts
+weather_alerts:
+  name: "Weather Alert Notifications"
+  icon: mdi:weather-lightning
+  initial: true
+
+# Energy Management
+energy_saving_mode:
+  name: "Energy Saving Mode"
+  icon: mdi:leaf
+  initial: false
+
+# Maintenance
+maintenance_mode:
+  name: "Maintenance Mode"
+  icon: mdi:wrench
+  initial: false

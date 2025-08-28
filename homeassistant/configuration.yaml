@@ -1,0 +1,103 @@
+
+# Home Assistant Main Configuration
+# This file contains the main configuration for Home Assistant
+# Last updated: 2025-08-17
+
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Lovelace Configuration
+lovelace:
+  mode: storage
+  dashboards:
+    setup-instructions:
+      mode: yaml # Yaml controlled
+      title: Setup Instructions
+      icon: mdi:information
+      show_in_sidebar: true
+      filename: includes/dashboards/setup-instructions.yaml
+
+    # System Monitor dashboard
+    system-monitor:
+      mode: yaml # Yaml controlled
+      title: System Monitor
+      icon: mdi:monitor-dashboard
+      show_in_sidebar: true
+      filename: includes/dashboards/system-monitor.yaml
+
+    # Another YAML-managed dashboard
+    automation-control:
+      mode: yaml
+      title: Automation Control  
+      icon: mdi:home-automation
+      show_in_sidebar: true
+      filename: includes/dashboards/automation-control.yaml
+
+
+# Core Configuration
+homeassistant:
+  name: "Home"
+  latitude: 43.401319593336645  # Replace with your actual latitude value or ensure secrets.yaml contains 'home_latitude'
+  longitude: -89.03530127352633  # Replace 0.0 with your actual longitude value or ensure secrets.yaml contains 'home_longitude'
+  elevation: 259  # Replace 100 with your actual elevation value or ensure secrets.yaml contains 'home_elevation'
+  unit_system: us_customary
+  temperature_unit: F
+  time_zone: "America/Chicago"
+  currency: USD
+  country: US
+  internal_url: "http://homeassistant:8123"
+  external_url: "https://your-external-url.example.com"
+  allowlist_external_dirs:
+    - "/config"
+
+# Frontend Configuration
+# frontend:
+#   extra_module_url:
+#     - /hacsfiles/lovelace-card-mod/card-mod.js
+
+# HTTP Configuration
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - ::1
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# Logging Configuration
+logger:
+  default: info
+  logs:
+    homeassistant.core: warning
+    homeassistant.components.mqtt: debug
+    homeassistant.components.zigbee2mqtt: debug
+    custom_components: debug
+
+# Recorder Configuration
+recorder:
+  purge_keep_days: 10
+  commit_interval: 3
+
+# History Configuration
+history: {}
+
+# System Health
+system_health:
+
+# Energy Configuration
+energy:
+
+# File Includes
+automation: !include includes/automations.yaml
+binary_sensor: !include includes/binary_sensors.yaml
+group: !include includes/groups.yaml
+input_boolean: !include includes/input_booleans.yaml
+input_number: !include includes/input_numbers.yaml
+input_select: !include includes/input_select.yaml
+light: !include includes/lights.yaml
+scene: !include includes/scenes.yaml
+script: !include includes/scripts.yaml
+sensor: !include includes/sensors.yaml
+switch: !include includes/switches.yaml
+template: !include includes/templates.yaml

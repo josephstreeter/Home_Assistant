@@ -1,0 +1,165 @@
+
+- name: "Evening Dusk to Dawn Lighting"
+  id: evening_dusk_to_dawn_lighting
+  icon: mdi:weather-sunset
+  entities:
+    # Living room lights - warm and dimmed
+    light.living_room_main:
+      state: on
+      brightness: 128
+      color_temp: 400
+    
+    # Bedroom lights - very dim for sleep preparation
+    light.bedroom_main:
+      state: on
+      brightness: 64
+      color_temp: 454
+    
+    # Kitchen lights - functional but warm
+    light.kitchen_main:
+      state: on
+      brightness: 180
+      color_temp: 370
+    
+    # Hallway lights - dim for navigation
+    light.hallway:
+      state: on
+      brightness: 96  
+      color_temp: 400
+    
+    # Outdoor/porch lights - security lighting
+    light.porch_light:
+      state: on
+      brightness: 255
+      color_temp: 320
+    
+    # Turn off bright/cool lights
+    light.office_overhead:
+      state: off
+    
+    light.bathroom_vanity:
+      state: on
+      brightness: 102
+      color_temp: 400
+
+- name: "Morning Bright Lights"
+  id: morning_bright_lights
+  icon: mdi:weather-sunny
+  entities:
+    # Living room lights - bright and cool for daytime
+    light.living_room_main:
+      state: on
+      brightness: 255
+      color_temp: 250
+    
+    # Bedroom lights - bright for getting ready
+    light.bedroom_main:
+      state: on
+      brightness: 200
+      color_temp: 280
+    
+    # Kitchen lights - bright for cooking/eating
+    light.kitchen_main:
+      state: on
+      brightness: 255
+      color_temp: 250
+    
+    # Hallway lights - bright for visibility
+    light.hallway:
+      state: on
+      brightness: 180
+      color_temp: 280
+    
+    # Office lights - bright for productivity
+    light.office_overhead:
+      state: on
+      brightness: 255
+      color_temp: 220
+    
+    # Bathroom lights - bright for grooming
+    light.bathroom_vanity:
+      state: on
+      brightness: 255
+      color_temp: 250
+    
+    # Turn off outdoor lights (daylight available)
+    light.porch_light:
+      state: off
+
+- name: "Movie Mode"
+  id: movie_mode
+  icon: mdi:movie-open
+  entities:
+    # Living room lights - very dim for movie watching
+    light.living_room_main:
+      state: on
+      brightness: 32
+      color_temp: 454
+    
+    # Turn off most lights for cinema experience
+    light.bedroom_main:
+      state: off
+    
+    light.kitchen_main:
+      state: off
+    
+    # Hallway lights - minimal for safety navigation
+    light.hallway:
+      state: on
+      brightness: 32
+      color_temp: 454
+    
+    light.office_overhead:
+      state: off
+    
+    light.bathroom_vanity:
+      state: off
+    
+    light.porch_light:
+      state: off
+
+- name: "Party Mode"
+  id: party_mode
+  icon: mdi:party-popper
+  entities:
+    # Living room lights - bright and colorful for party atmosphere
+    light.living_room_main:
+      state: on
+      brightness: 255
+      color_temp: 280
+    
+    # Bedroom lights - moderate brightness
+    light.bedroom_main:
+      state: on
+      brightness: 180
+      color_temp: 300
+    
+    # Kitchen lights - bright for food/drinks
+    light.kitchen_main:
+      state: on
+      brightness: 255
+      color_temp: 250
+    
+    # Hallway lights - bright for guest navigation
+    light.hallway:
+      state: on
+      brightness: 200
+      color_temp: 280
+    
+    # Office lights - on for overflow space
+    light.office_overhead:
+      state: on
+      brightness: 220
+      color_temp: 280
+    
+    # Bathroom lights - bright for guests
+    light.bathroom_vanity:
+      state: on
+      brightness: 255
+      color_temp: 300
+    
+    # Outdoor lights - welcoming for arrivals
+    light.porch_light:
+      state: on
+      brightness: 255
+      color_temp: 280

@@ -1,0 +1,207 @@
+title: Automation Control Dashboard
+views:
+  - title: Automation Overview
+    path: automation-overview
+    icon: mdi:robot
+    cards:
+      # Automation Controls
+      - type: entities
+        title: System Modes
+        show_header_toggle: false
+        entities:
+          - entity: input_boolean.energy_saving_mode
+            name: Energy Saving Mode
+            icon: mdi:leaf
+          - entity: input_boolean.maintenance_mode
+            name: Maintenance Mode
+            icon: mdi:tools
+          - entity: input_boolean.vacation_mode
+            name: Vacation Mode
+            icon: mdi:airplane
+          - entity: input_boolean.guest_mode
+            name: Guest Mode
+            icon: mdi:account-group
+          - entity: input_boolean.sleep_mode
+            name: Sleep Mode
+            icon: mdi:sleep 
+      # Active Automations
+      - type: entities
+        title: Active Automations
+        show_header_toggle: false
+        entities:
+          - entity: automation.test_sample_automation
+            name: Test Sample Automation
+            icon: mdi:test-tube
+          - entity: automation.evening_sunset_lighting
+            name: Evening Sunset Lighting
+            icon: mdi:weather-sunset-down
+          - entity: automation.morning_sunrise_lights_off
+            name: Morning Sunrise Lights Off
+            icon: mdi:weather-sunrise
+
+      # Automation Statistics
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.automation_count
+            name: Total Automations
+            icon: mdi:counter
+          - type: entity
+            entity: sensor.automation_enabled_count
+            name: Enabled
+            icon: mdi:check-circle
+          - type: entity
+            entity: sensor.automation_disabled_count
+            name: Disabled
+            icon: mdi:cancel
+
+      # Recent Automation Activity
+      - type: logbook
+        title: Recent Automation Activity
+        entities:
+          - automation.test_sample_automation
+          - automation.evening_sunset_lighting
+          - automation.morning_sunrise_lights_off
+        hours_to_show: 24
+
+      # Helper Controls
+      - type: entities
+        entities:
+          - input_boolean.auto_lights
+          - input_number.sunrise_offset
+          - input_number.sunset_offset
+        title: Lighting Controls
+      - type: entities
+        entities:  
+          - input_boolean.security_monitoring
+          - input_boolean.motion_lights
+          - input_number.motion_timeout
+          - input_number.door_alert_delay
+          - input_boolean.door_alerts
+          - input_boolean.window_alerts
+        title: Security Controls
+      - type: entities
+        entities:
+          - input_boolean.auto_climate
+          - input_number.temperature_comfort_max
+          - input_number.temperature_comfort_min
+          - input_number.humidity_threshold
+          - input_number.humidity_low_threshold
+          - input_boolean.weather_alerts
+        title: Environment Controls
+
+  - title: Scene Control
+    path: scene-control
+    icon: mdi:palette
+    cards:
+      # Scene Controls
+      - type: entities
+        title: Available Scenes
+        show_header_toggle: false
+        entities:
+          - entity: scene.evening_dusk_to_dawn_lighting
+            name: Evening Lighting
+            icon: mdi:weather-night
+          - entity: scene.morning_bright_lights
+            name: Morning Bright
+            icon: mdi:weather-sunny
+          - entity: scene.movie_mode
+            name: Movie Mode
+            icon: mdi:movie
+          - entity: scene.party_mode
+            name: Party Mode
+            icon: mdi:party-popper
+
+      # Quick Scene Actions
+      - type: horizontal-stack
+        cards:
+          - type: button
+            entity: scene.evening_dusk_to_dawn_lighting
+            name: Evening
+            icon: mdi:weather-sunset
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              target:
+                entity_id: scene.evening_dusk_to_dawn_lighting
+          - type: button
+            entity: scene.morning_bright_lights
+            name: Morning
+            icon: mdi:weather-sunrise
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              target:
+                entity_id: scene.morning_bright_lights
+          - type: button
+            entity: scene.movie_mode
+            name: Movie
+            icon: mdi:movie
+            tap_action:
+              action: call-service
+              service: scene.turn_on
+              target:
+                entity_id: scene.movie_mode
+
+  - title: Script Control
+    path: script-control
+    icon: mdi:script-text
+    cards:
+      # Script Controls
+      - type: entities
+        title: Available Scripts
+        show_header_toggle: false
+        entities:
+          - entity: script.startup_routine
+            name: Startup Routine
+            icon: mdi:power
+          - entity: script.bedtime_routine
+            name: Bedtime Routine
+            icon: mdi:sleep
+          - entity: script.away_mode
+            name: Away Mode
+            icon: mdi:home-export-outline
+          - entity: script.welcome_home
+            name: Welcome Home
+            icon: mdi:home-import-outline
+
+      # Quick Script Actions
+      - type: horizontal-stack
+        cards:
+          - type: button
+            entity: script.startup_routine
+            name: Startup
+            icon: mdi:power-on
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.startup_routine
+          - type: button
+            entity: script.bedtime_routine
+            name: Bedtime
+            icon: mdi:sleep
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.bedtime_routine
+          - type: button
+            entity: script.away_mode
+            name: Away
+            icon: mdi:home-export-outline
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              target:
+                entity_id: script.away_mode
+
+      # Script Activity Log
+      - type: logbook
+        title: Recent Script Activity
+        entities:
+          - script.startup_routine
+          - script.bedtime_routine
+          - script.away_mode
+          - script.welcome_home
+        hours_to_show: 24

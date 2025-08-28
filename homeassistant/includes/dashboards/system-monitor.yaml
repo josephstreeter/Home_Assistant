@@ -1,0 +1,355 @@
+title: System Monitor Dashboard
+views:
+  - title: System Overview
+    path: system-overview
+    icon: mdi:monitor-dashboard
+    cards:
+      # System Summary Cards
+      - type: horizontal-stack
+        cards:
+          # - type: entity
+          #   entity: sensor.uptime
+          #   name: System Uptime
+          #   icon: mdi:clock-outline
+          - type: entity
+            entity: sensor.system_monitor_last_boot
+            name: Last Boot
+            icon: mdi:restart
+          - type: entity
+            entity: sensor.system_monitor_processor_temperature
+            name: CPU Temperature
+            icon: mdi:thermometer
+
+      # CPU & Load Monitoring
+      - type: entities
+        title: CPU & Load Information
+        show_header_toggle: false
+        entities:
+          - entity: sensor.system_monitor_processor_use
+            name: CPU Usage (%)
+            icon: mdi:cpu-64-bit
+          - entity: sensor.system_monitor_processor_temperature
+            name: CPU Temperature
+            icon: mdi:thermometer
+          - entity: sensor.system_monitor_load_1m
+            name: Load Average (1m)
+            icon: mdi:chart-line
+          - entity: sensor.system_monitor_load_5m
+            name: Load Average (5m)
+            icon: mdi:chart-line
+          - entity: sensor.system_monitor_load_15m
+            name: Load Average (15m)
+            icon: mdi:chart-line
+
+      # Memory Details
+      - type: entities
+        title: Memory Information
+        show_header_toggle: false
+        entities:
+          - entity: sensor.system_monitor_memory_usage
+            name: Memory Usage (%)
+            icon: mdi:memory
+          - entity: sensor.system_monitor_memory_use
+            name: Memory Used
+            icon: mdi:memory
+          - entity: sensor.system_monitor_memory_free
+            name: Memory Free
+            icon: mdi:memory
+          - entity: sensor.system_monitor_swap_usage
+            name: Swap Usage (%)
+            icon: mdi:harddisk
+          - entity: sensor.system_monitor_swap_use
+            name: Swap Used
+            icon: mdi:harddisk
+          - entity: sensor.system_monitor_swap_free
+            name: Swap Free
+            icon: mdi:harddisk
+
+      # Storage Information
+      - type: entities
+        title: Storage Information
+        show_header_toggle: false
+        entities:
+          # - entity: sensor.disk_use_percent_home
+          #   name: Home Disk Usage (%)
+          #   icon: mdi:harddisk
+          - entity: sensor.system_monitor_disk_use
+            name: Home Disk Used
+            icon: mdi:harddisk
+          - entity: sensor.system_monitor_disk_free
+            name: Home Disk Free
+            icon: mdi:harddisk
+
+      # Network Statistics
+      # - type: entities
+      #   title: Network Activity
+      #   show_header_toggle: false
+      #   entities:
+      #     - entity: sensor.network_in_eth0
+      #       name: Network In
+      #       icon: mdi:download-network
+      #     - entity: sensor.network_out_eth0
+      #       name: Network Out
+      #       icon: mdi:upload-network
+      #     - entity: sensor.packets_in_eth0
+      #       name: Packets In
+      #       icon: mdi:download-network-outline
+      #     - entity: sensor.packets_out_eth0
+      #       name: Packets Out
+      #       icon: mdi:upload-network-outline
+      #     - entity: sensor.throughput_network_in_eth0
+      #       name: Throughput In
+      #       icon: mdi:speedometer
+      #     - entity: sensor.throughput_network_out_eth0
+      #       name: Throughput Out
+      #       icon: mdi:speedometer
+
+      # Resource Gauges
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.system_monitor_processor_use
+            name: CPU Usage
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 70
+              red: 90
+            needle: true
+          - type: gauge
+            entity: sensor.system_monitor_memory_usage
+            name: Memory Usage
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 80
+              red: 95
+            needle: true
+          - type: gauge
+            entity: sensor.system_monitor_disk_usage
+            name: Disk Usage
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 80
+              red: 90
+            needle: true
+
+      # CPU & Memory History
+      - type: history-graph
+        title: CPU & Memory Usage (24h)
+        entities:
+          - entity: sensor.system_monitor_processor_use
+            name: CPU %
+          - entity: sensor.system_monitor_memory_use
+            name: Memory %
+        hours_to_show: 24
+        refresh_interval: 300
+
+      # Load Average History
+      - type: history-graph
+        title: System Load Average (24h)
+        entities:
+          - entity: sensor.system_monitor_load_1m
+            name: 1 min
+          - entity: sensor.system_monitor_load_5m
+            name: 5 min
+          - entity: sensor.system_monitor_load_15m
+            name: 15 min
+        hours_to_show: 24
+        refresh_interval: 300
+
+      # Network Throughput History
+      # - type: history-graph
+      #   title: Network Throughput (24h)
+      #   entities:
+      #     - entity: sensor.throughput_network_in_eth0
+      #       name: In (MB/s)
+      #     - entity: sensor.throughput_network_out_eth0
+      #       name: Out (MB/s)
+      #   hours_to_show: 24
+      #   refresh_interval: 300
+
+  - title: Home Assistant Health
+    path: ha-health
+    icon: mdi:home-assistant
+    cards:
+      # Home Assistant Core Info
+      - type: entities
+        title: Home Assistant Information
+        show_header_toggle: false
+        entities:
+          - entity: sensor.current_version
+            name: Current Version
+            icon: mdi:home-assistant
+          - entity: binary_sensor.updater
+            name: Update Available
+            icon: mdi:update
+          - entity: sensor.home_assistant_log_size
+            name: Log File Size
+            icon: mdi:file-document
+          - entity: sensor.home_assistant_v2_db
+            name: Database Size
+            icon: mdi:database
+
+      # Entity Counts
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.automation_count
+            name: Automations
+            icon: mdi:robot
+          - type: entity
+            entity: sensor.script_count
+            name: Scripts
+            icon: mdi:script-text
+          - type: entity
+            entity: sensor.sensor_count
+            name: Sensors
+            icon: mdi:eye
+
+      # Integration Health
+      - type: entities
+        title: Integration Status
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.hacs
+            name: HACS Status
+            icon: mdi:package-variant
+          - entity: binary_sensor.remote_ui
+            name: Remote UI
+            icon: mdi:cloud
+          - entity: binary_sensor.check_config
+            name: Config Check
+            icon: mdi:check-circle
+
+      # Restart & Reload Services
+      - type: entities
+        title: System Controls
+        show_header_toggle: false
+        entities:
+          - entity: button.restart
+            name: Restart Home Assistant
+            icon: mdi:restart
+          - entity: button.quick_reload
+            name: Quick Reload
+            icon: mdi:reload
+
+  - title: Docker Containers
+    path: docker-health
+    icon: mdi:docker
+    cards:
+      # Container Status
+      - type: entities
+        title: Container Health
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.homeassistant_running
+            name: Home Assistant
+            icon: mdi:home-assistant
+          - entity: binary_sensor.mosquitto_running
+            name: Mosquitto MQTT
+            icon: mdi:message-processing
+          - entity: binary_sensor.zigbee2mqtt_running
+            name: Zigbee2MQTT
+            icon: mdi:zigbee
+
+      # Container Resource Usage
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.homeassistant_memory_percent
+            name: HA Memory
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 70
+              red: 90
+          - type: gauge
+            entity: sensor.mosquitto_memory_percent
+            name: MQTT Memory
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 70
+              red: 90
+          - type: gauge
+            entity: sensor.zigbee2mqtt_memory_percent
+            name: Z2M Memory
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 70
+              red: 90
+
+      # Container CPU Usage
+      - type: horizontal-stack
+        cards:
+          - type: entity
+            entity: sensor.homeassistant_cpu_percent
+            name: HA CPU %
+            icon: mdi:cpu-64-bit
+          - type: entity
+            entity: sensor.mosquitto_cpu_percent
+            name: MQTT CPU %
+            icon: mdi:cpu-64-bit
+          - type: entity
+            entity: sensor.zigbee2mqtt_cpu_percent
+            name: Z2M CPU %
+            icon: mdi:cpu-64-bit
+
+  - title: System Alerts
+    path: system-alerts
+    icon: mdi:alert
+    cards:
+      # Critical Alerts
+      - type: entities
+        title: Critical System Alerts
+        show_header_toggle: false
+        entities:
+          - entity: binary_sensor.cpu_high_usage
+            name: High CPU Usage
+            icon: mdi:cpu-64-bit
+          - entity: binary_sensor.memory_high_usage
+            name: High Memory Usage
+            icon: mdi:memory
+          - entity: binary_sensor.disk_full
+            name: Disk Space Low
+            icon: mdi:harddisk
+
+      # Temperature Monitoring
+      - type: gauge
+        entity: sensor.system_monitor_processor_temperature
+        name: CPU Temperature
+        min: 0
+        max: 400
+        severity:
+          green: 0
+          yellow: 200
+          red: 300
+        unit: °F
+        needle: true
+
+      # System Performance Summary
+      - type: markdown
+        title: System Status Summary
+        content: |
+          ## Current System Status
+
+          **CPU:** {{ states('sensor.system_monitor_processor_usage') }}%
+
+          **Memory:** {{ states('sensor.system_monitor_memory_usage') }}
+
+          **Disk:** {{ states('sensor.system_monitor_disk_usage') }}
+
+          **Temperature:** {{ states('sensor.system_monitor_processor_temperature') }}°C
+          
+          **Uptime:** {{ states('sensor.uptime') }}
+          
+          **Last Boot:** {{ states('sensor.system_monitor_last_boot') }}

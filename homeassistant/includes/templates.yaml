@@ -1,0 +1,31 @@
+# Climate Control Sensors
+# "Window Recommendation"
+
+# HVAC Efficiency Alerts
+# "AC On and Door or Window Open"
+# "Heating On and Door or Window Open"
+# "Humidity High Inside"
+# "Humidity Low Inside"
+# "Humidity High Outside"
+
+# Enhanced Window and Door Status
+# "Any Window Open"
+# "Any Door Open"
+
+# Air Quality and Ventilation
+
+# Binary sensor for weather alerts
+- binary_sensor:
+    - name: "Weather Alert Active"
+      state: >
+        {{ states('sensor.nws_alert_count') | int(0) > 0 }}
+      device_class: problem
+      availability: >
+        {{ states('sensor.nws_alert_count') not in ['unknown', 'unavailable'] }}
+      attributes:
+        alert_type: >
+          {{ states('sensor.nws_current_alert') }}
+        severity: >
+          {{ states('sensor.nws_alert_severity') }}
+        urgency: >
+          {{ states('sensor.nws_alert_urgency') }}

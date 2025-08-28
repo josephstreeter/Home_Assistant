@@ -1,0 +1,84 @@
+# Home Assistant stack
+services:
+  homeassistant:
+    container_name: ha
+    image: "homeassistant/home-assistant:2025.1.0"
+    volumes:
+      - ha_data:/config/
+      - ./homeassistant/configuration.yaml:/config/configuration.yaml
+      - ./homeassistant/includes:/config/includes
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - TZ=America/Chicago
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8123"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "com.example.service=homeassistant"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # mosquitto:
+  #   container_name: mqtt
+  #   image: "eclipse-mosquitto:2.0.18"
+  #   ports:
+  #     - 1883:1883
+  #     - 9001:9001
+  #   volumes:
+  #     - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+  #     - mosquitto_data:/mosquitto/data
+  #     - mosquitto_log:/mosquitto/log
+  #   restart: unless-stopped
+  #   environment:
+  #     - TZ=America/Chicago
+  #   labels:
+  #     - "com.example.service=mosquitto"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+
+  # zigbee2mqtt:
+  #   container_name: z2m
+  #   restart: unless-stopped
+  #   image: koenkk/zigbee2mqtt:1.33.1
+  #   volumes:
+  #     - ./zigbee2mqtt/configuration.yaml:/app/data/configuration.yaml
+  #     - zigbee2mqtt_data:/app/data
+  #     - /run/udev:/run/udev:ro
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     - TZ=America/Chicago
+  #   devices:
+  #     - /dev/ttyUSB0:/dev/ttyUSB0
+  #   depends_on:
+  #     - mosquitto
+  #   labels:
+  #     - "com.example.service=zigbee2mqtt"
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+
+# Example secret usage (uncomment and configure if needed)
+# secrets:
+#  mqtt_password:
+#    file: ./secrets/mqtt_password.txt
+
+volumes:
+  ha_data:
+  # mosquitto_data:
+  # mosquitto_log:
+  # zigbee2mqtt_data:
