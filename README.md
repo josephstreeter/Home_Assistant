@@ -1,10 +1,10 @@
 # Home Assistant Docker Compose Stack
 
-This repository contains a comprehensive Home Assistant smart home setup using Docker Compose. It orchestrates three main services: Home Assistant, Mosquitto (MQTT broker), and Zigbee2MQTT, along with complete automation dashboards, sensor monitoring, and CI/CD deployment workflows. The configuration is designed for reliability, maintainability, and ease of use.
+This repository contains a comprehensive Home Assistant smart home setup using Docker Compose. It provides a streamlined Home Assistant installation with ZHA (Zigbee Home Automation) integration, complete automation dashboards, sensor monitoring, and CI/CD deployment workflows. The configuration is designed for reliability, maintainability, and ease of use.
 
 ## 🚀 Features
 
-- **Complete Home Assistant Stack**: Home Assistant, Mosquitto MQTT, and Zigbee2MQTT
+- **Home Assistant with ZHA**: Direct Zigbee device integration using ZHA
 - **Advanced Dashboard System**: System monitoring and automation control interfaces
 - **Smart Automations**: Sunset/sunrise lighting with vacation and auto-light controls
 - **Template Sensors**: Real-time monitoring of automation counts and system status
@@ -16,51 +16,34 @@ This repository contains a comprehensive Home Assistant smart home setup using D
 
 ### 1. Home Assistant
 
-- **Image:** `homeassistant/home-assistant:2024.6.2`
-- **Purpose:** Central smart home automation platform. Integrates with various devices and protocols.
+- **Image:** `homeassistant/home-assistant:2025.1.0`
+- **Purpose:** Central smart home automation platform with built-in ZHA for Zigbee device integration.
 - **Volumes:**
   - `ha_data:/config/` (named volume for all runtime data and unmanaged files)
   - `./homeassistant/configuration.yaml:/config/configuration.yaml` (bind mount for main config)
   - `./homeassistant/includes:/config/includes` (bind mount for includes directory)
   - `/etc/localtime:/etc/localtime:ro`
 - **Network Mode:** Host (for device discovery and integrations).
+- **Devices:**
+  - `/dev/ttyUSB0:/dev/ttyUSB0` (Zigbee USB adapter for ZHA integration)
 - **Environment:**
   - `TZ`: Sets the time zone.
 - **Healthcheck:** Monitors service health via HTTP.
 - **Labels:** Metadata for management and automation.
 - **Logging:** Rotates logs for diagnostics.
 
-### 2. Mosquitto (MQTT Broker)
+## Zigbee Integration
 
-- **Image:** `eclipse-mosquitto:2.0.18`
-- **Purpose:** MQTT message broker for IoT devices and Zigbee2MQTT integration.
-- **Ports:**
-  - `1883`: MQTT protocol.
-  - `9001`: WebSocket support.
-- **Volumes:**
-  - `./mosquitto.conf:/mosquitto/config/mosquitto.conf` (bind mount for main config)
-  - `mosquitto_data:/mosquitto/data` (named volume for persistent data)
-  - `mosquitto_log:/mosquitto/log` (named volume for logs)
-- **Environment:**
-  - `TZ`: Sets the time zone.
-- **Labels:** Metadata for management and automation.
-- **Logging:** Rotates logs for diagnostics.
+This setup uses **ZHA (Zigbee Home Automation)** integration built into Home Assistant for direct Zigbee device management:
 
-### 3. Zigbee2MQTT
+- **Direct Integration**: No additional containers required for Zigbee support
+- **USB Device**: Zigbee coordinator directly connected to Home Assistant container
+- **Device Support**: Wide compatibility with Zigbee 3.0 devices
+- **Management**: Built-in ZHA interface for device pairing and management
 
-- **Image:** `koenkk/zigbee2mqtt:1.33.1`
-- **Purpose:** Bridges Zigbee devices to MQTT, enabling integration with Home Assistant.
-- **Ports:**
-  - `8080`: Zigbee2MQTT web interface.
-- **Volumes:**
-  - `./zigbee2mqtt/configuration.yaml:/app/data/configuration.yaml` (bind mount for Zigbee2MQTT config)
-  - `zigbee2mqtt_data:/app/data` (named volume for Zigbee2MQTT runtime data)
-  - `/run/udev:/run/udev:ro`
-- **Devices:**
-  - `/dev/ttyUSB0`: Zigbee USB adapter.
-- **Depends On:** Mosquitto (ensures MQTT broker is available).
-- **Labels:** Metadata for management and automation.
-- **Logging:** Rotates logs for diagnostics.
+### Migrated from Zigbee2MQTT + Mosquitto
+
+This configuration has been simplified by migrating from the previous Zigbee2MQTT + Mosquitto setup to the native ZHA integration, reducing complexity and container overhead while maintaining full Zigbee functionality.
 
 ## Configuration Structure
 
@@ -120,15 +103,6 @@ This repository contains a comprehensive Home Assistant smart home setup using D
 - `ha_data` (named volume for Home Assistant runtime data)
 - `./homeassistant/configuration.yaml` (bind mount for Home Assistant main config)
 - `./homeassistant/includes` (bind mount for Home Assistant includes directory)
-- `mosquitto_data` (named volume for Mosquitto persistent data)
-- `mosquitto_log` (named volume for Mosquitto logs)
-- `./mosquitto/mosquitto.conf` (bind mount for Mosquitto config)
-- `zigbee2mqtt_data` (named volume for Zigbee2MQTT runtime data)
-- `./zigbee2mqtt/configuration.yaml` (bind mount for Zigbee2MQTT config)
-
-## Secrets
-
-  A template for secrets is included (commented out). Use this for sensitive data such as MQTT passwords.
 
 ## Deployment
 
@@ -152,7 +126,7 @@ This repository includes a GitHub Actions workflow (`.github/workflows/deploy.ym
    ```
 
 4. Access Home Assistant via `http://localhost:8123`.
-5. Access Zigbee2MQTT web interface via `http://localhost:8080`.
+5. Configure ZHA integration through Home Assistant UI: Settings → Devices & Services → Add Integration → ZHA.
 
 ## Dashboard Access
 
@@ -160,7 +134,7 @@ This repository includes a GitHub Actions workflow (`.github/workflows/deploy.ym
 - **System Monitor Dashboard**: Navigate to "System Monitor" in the sidebar
 - **Automation Control**: Navigate to "Automation Control" in the sidebar
 - **Setup Instructions**: Navigate to "Setup Guide" in the sidebar for integration setup
-- **Zigbee2MQTT Interface**: `http://localhost:8080`
+- **ZHA Integration**: Access through Settings → Devices & Services → ZHA for Zigbee device management
 
 ## Automation Management
 
@@ -220,23 +194,19 @@ This repository includes a GitHub Actions workflow (`.github/workflows/deploy.ym
 ├── .github/workflows/
 │   └── deploy.yml                 # GitHub Actions deployment workflow
 ├── docker-compose.yml             # Main Docker Compose configuration
-├── homeassistant/
-│   ├── configuration.yaml         # Main Home Assistant config
-│   └── includes/
-│       ├── automations.yaml       # Smart home automations
-│       ├── sensors.yaml           # Template sensors
-│       ├── scenes.yaml            # Lighting scenes
-│       ├── scripts.yaml           # Automation scripts
-│       ├── input_booleans.yaml    # Control switches
-│       └── dashboards/
-│           ├── system-monitor.yaml        # System monitoring dashboard
-│           ├── automation-control.yaml    # Automation control interface
-│           ├── setup-instructions.yaml    # Integration setup guide
-│           └── helpers.yaml               # Helper entity management
-├── mosquitto/
-│   └── mosquitto.conf             # MQTT broker configuration
-└── zigbee2mqtt/
-    └── configuration.yaml          # Zigbee2MQTT settings
+└── homeassistant/
+    ├── configuration.yaml         # Main Home Assistant config
+    └── includes/
+        ├── automations.yaml       # Smart home automations
+        ├── sensors.yaml           # Template sensors
+        ├── scenes.yaml            # Lighting scenes
+        ├── scripts.yaml           # Automation scripts
+        ├── input_booleans.yaml    # Control switches
+        └── dashboards/
+            ├── system-monitor.yaml        # System monitoring dashboard
+            ├── automation-control.yaml    # Automation control interface
+            ├── setup-instructions.yaml    # Integration setup guide
+            └── helpers.yaml               # Helper entity management
 ```
 
 ## Contributing
@@ -250,9 +220,8 @@ This repository includes a GitHub Actions workflow (`.github/workflows/deploy.ym
 ## Support
 
 - **Home Assistant Documentation**: [home-assistant.io](https://www.home-assistant.io/)
-- **Zigbee2MQTT Documentation**: [zigbee2mqtt.io](https://www.zigbee2mqtt.io/)
-- **Mosquitto Documentation**: [mosquitto.org](https://mosquitto.org/)
+- **ZHA Documentation**: [ZHA Integration Guide](https://www.home-assistant.io/integrations/zha/)
 
 ---
 
-**Last Updated:** August 18, 2025
+**Last Updated:** August 28, 2025
