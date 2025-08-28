@@ -17,14 +17,21 @@ jobs:
 
       - name: Deploy updated stack
         run: |
-          cd /home/docker/homeassistant
-          cp $GITHUB_WORKSPACE/docker-compose.yml ./
-          cp $GITHUB_WORKSPACE/homeassistant/configuration.yaml ./homeassistant/configuration.yaml
-          cp -r $GITHUB_WORKSPACE/homeassistant/includes ./homeassistant/
-          cp $GITHUB_WORKSPACE/mosquitto/mosquitto.conf ./mosquitto/mosquitto.conf
-          docker-compose up -d
+          echo "Deploying updated Docker Compose stack..."
+          whoami
+          echo "Creating directories if they don't exist..."
+          sudo mkdir -p /docker/homeassistant
+          sudo mkdir -p /docker/homeassistant/homeassistant
+          cd /docker/homeassistant
+          
+          sudo cp $GITHUB_WORKSPACE/docker-compose.yml ./
+          sudo cp $GITHUB_WORKSPACE/homeassistant/configuration.yaml ./homeassistant/
+          sudo cp -r $GITHUB_WORKSPACE/homeassistant/includes ./homeassistant/
+          sudo docker-compose up -d
         shell: bash
 
       - name: Verify deployment
-        run: docker-compose ps
+        run: |
+          cd /docker/homeassistant
+          sudo docker-compose ps
         shell: bash
