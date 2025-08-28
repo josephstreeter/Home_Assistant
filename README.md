@@ -53,12 +53,80 @@ This configuration has been simplified by migrating from the previous Zigbee2MQT
 - **Dashboard Configurations**:
   - `includes/dashboards/system-monitor.yaml` - System health and resource monitoring
   - `includes/dashboards/automation-control.yaml` - Automation management interface
-- **Component Configurations**:
-  - `includes/automations.yaml` - Smart home automations
-  - `includes/sensors.yaml` - Template sensors for monitoring
-  - `includes/scenes.yaml` - Lighting and device scenes
-  - `includes/scripts.yaml` - Reusable automation scripts
-  - `includes/input_booleans.yaml` - Toggle switches for automation control
+- **Component Configurations**: All include files contain descriptions and commented examples for easy customization
+
+#### Core Component Files
+
+- **`includes/automations.yaml`** - Home Assistant automation entities
+  - Rules that automatically trigger actions based on conditions and triggers
+  - Consists of triggers (what starts), conditions (optional checks), and actions (what happens)
+  - Example: Motion-activated lighting with illuminance checks
+
+- **`includes/sensors.yaml`** - Home Assistant sensor entities
+  - Template sensors, REST sensors, and platform-specific sensors
+  - Provides data from weather APIs, system stats, and calculated values
+  - Example: Temperature sensors with device class and unit configuration
+
+- **`includes/binary_sensors.yaml`** - Home Assistant binary sensor entities
+  - Two-state sensors (on/off, true/false) for motion, doors, windows, and alerts
+  - MQTT, template, and platform-specific binary sensors
+  - Examples: Door sensors, temperature alerts with availability templates
+
+- **`includes/scenes.yaml`** - Home Assistant scene entities
+  - Snapshots of device states for coordinated device control
+  - Useful for lighting moods, security settings, and device orchestration
+  - Examples: Evening lighting, morning brightness, movie mode scenes
+
+- **`includes/scripts.yaml`** - Home Assistant script entities
+  - Reusable sequences of actions for common tasks
+  - Can include service calls, delays, conditions, and complex logic
+  - Examples: Startup routines, bedtime sequences, system monitoring scripts
+
+#### Helper Entity Files
+
+- **`includes/input_booleans.yaml`** - Input boolean helpers
+  - Toggleable switches for manual control and automation conditions
+  - Used in dashboards, automations, and mode switching
+  - Examples: Vacation mode, guest mode, automation enable/disable switches
+
+- **`includes/input_numbers.yaml`** - Input number helpers  
+  - Adjustable sliders and number inputs for user-configurable parameters
+  - Used for thresholds, delays, and numeric automation values
+  - Examples: Temperature thresholds, motion timeouts, lighting offsets
+
+- **`includes/input_select.yaml`** - Input select helpers
+  - Dropdown lists with predefined options for user interfaces
+  - Useful for mode selection and state management
+  - Examples: House modes (Home/Away/Sleep), thermostat presets
+
+#### Device Control Files
+
+- **`includes/lights.yaml`** - Home Assistant light entities
+  - Smart bulbs, LED strips, dimmers from various integrations
+  - MQTT, Zigbee, Z-Wave, and template light configurations
+  - Examples: MQTT lights with brightness, color temperature, and availability
+
+- **`includes/switches.yaml`** - Home Assistant switch entities
+  - Smart plugs, relays, and other controllable devices
+  - MQTT, template, and platform-specific switch configurations  
+  - Examples: MQTT switches with state/command topics and availability
+
+#### Organization Files
+
+- **`includes/groups.yaml`** - Home Assistant group entities
+  - Organize related entities for easier management and automation
+  - Groups lights, sensors, switches, and other logical device collections
+  - Examples: Room lighting groups, sensor collections, device categories
+
+- **`includes/templates.yaml`** - Home Assistant template sensors and binary sensors
+  - Jinja2 template-based entities for calculated states and attributes
+  - Weather alerts, system monitoring, and derived sensor values
+  - Examples: Weather alert binary sensors, temperature calculations
+
+- **`includes/dashboard.yaml`** - Home Assistant dashboard configurations
+  - Custom dashboard YAML syntax for user interfaces
+  - Multiple views, card layouts, and interface customization
+  - Examples: Multi-view dashboards with entity cards, weather, and gauges
 
 ### Automation Features
 
@@ -196,12 +264,23 @@ This repository includes a GitHub Actions workflow (`.github/workflows/deploy.ym
 ├── docker-compose.yml             # Main Docker Compose configuration
 └── homeassistant/
     ├── configuration.yaml         # Main Home Assistant config
+    ├── blueprints/
+    │   └── script/
+    │       └── confirmable_notification.yaml  # Actionable notification blueprint
     └── includes/
-        ├── automations.yaml       # Smart home automations
-        ├── sensors.yaml           # Template sensors
-        ├── scenes.yaml            # Lighting scenes
-        ├── scripts.yaml           # Automation scripts
-        ├── input_booleans.yaml    # Control switches
+        ├── automations.yaml       # Automation entities with triggers/conditions/actions
+        ├── binary_sensors.yaml    # Two-state sensors (motion, doors, alerts)
+        ├── dashboard.yaml         # Custom dashboard YAML configurations
+        ├── groups.yaml            # Entity organization and logical groupings
+        ├── input_booleans.yaml    # Toggle switches for automation control
+        ├── input_numbers.yaml     # Adjustable sliders and numeric inputs
+        ├── input_select.yaml      # Dropdown lists with predefined options
+        ├── lights.yaml            # Light entities (bulbs, strips, dimmers)
+        ├── scenes.yaml            # Device state snapshots for coordinated control
+        ├── scripts.yaml           # Reusable action sequences and routines
+        ├── sensors.yaml           # Template and platform sensors for monitoring
+        ├── switches.yaml          # Switch entities (plugs, relays, devices)
+        ├── templates.yaml         # Jinja2 template sensors and binary sensors
         └── dashboards/
             ├── system-monitor.yaml        # System monitoring dashboard
             ├── automation-control.yaml    # Automation control interface

@@ -1,3 +1,18 @@
+# This file contains Home Assistant sensor entities.
+# Define sensors here, including template sensors, REST sensors, and platform-specific sensors.
+# Sensors provide data from various sources like weather APIs, system stats, or calculated values.
+#
+# Example sensor configuration (commented out):
+#
+# - platform: template
+#   sensors:
+#     example_temperature:
+#       friendly_name: "Example Temperature"
+#       value_template: "{{ states('sensor.raw_temp') | float | round(1) }}"
+#       unit_of_measurement: "°C"
+#       device_class: temperature
+#       icon_template: mdi:thermometer
+
 # Automation Count Sensors
 - platform: template
   sensors:

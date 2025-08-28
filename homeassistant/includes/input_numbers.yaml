@@ -1,3 +1,30 @@
+# This file contains Home Assistant input_number entities.
+# Define input_number helpers here - adjustable sliders and number inputs for user control.
+# These are useful for setting thresholds, delays, and numeric values in automations and dashboards.
+# Input numbers can be used to create dynamic, user-configurable automation parameters.
+#
+# Example input_number configuration (commented out):
+#
+# example_slider:
+#   name: "Example Slider"
+#   min: 0
+#   max: 100
+#   step: 5
+#   initial: 50
+#   unit_of_measurement: "%"
+#   icon: mdi:tune-vertical
+#   mode: slider
+#
+# example_box:
+#   name: "Example Number Box"
+#   min: 1
+#   max: 24
+#   step: 1
+#   initial: 12
+#   unit_of_measurement: "hours"
+#   icon: mdi:timer
+#   mode: box
+
 # Input Numbers for Home Assistant
 # These provide adjustable sliders and number inputs for automations
 

@@ -1,3 +1,31 @@
+# This file contains Home Assistant automation entities.
+# Define automations here - rules that automatically trigger actions based on conditions and triggers.
+# Automations consist of triggers (what starts the automation), conditions (optional checks), 
+# and actions (what the automation does when triggered).
+# Use automations to create smart home behaviors like turning lights on at sunset or sending alerts.
+#
+# Example automation configuration (commented out):
+#
+# - id: example_automation
+#   alias: 'Example: Motion Light'
+#   description: Turn on lights when motion is detected
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.motion_living_room
+#       from: 'off'
+#       to: 'on'
+#   condition:
+#     - condition: numeric_state
+#       entity_id: sensor.living_room_illuminance
+#       below: 50
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.living_room
+#       data:
+#         brightness: 255
+#   mode: single
+
 - id: test_automation_sample
   alias: 'Test: Sample Automation'
   description: A simple test automation that sends a notification every 30 minutes

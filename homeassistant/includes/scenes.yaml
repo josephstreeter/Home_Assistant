@@ -1,4 +1,24 @@
 
+# This file contains Home Assistant scene entities.
+# Define scenes here - snapshots of entity states that can be activated to set multiple devices
+# at once. Scenes are useful for lighting moods, security settings, or any coordinated device states.
+# Each scene specifies the desired state for multiple entities like lights, switches, and covers.
+#
+# Example scene configuration (commented out):
+#
+# - name: "Example Scene"
+#   id: example_scene
+#   icon: mdi:lightbulb-group
+#   entities:
+#     light.living_room:
+#       state: on
+#       brightness: 180
+#       color_temp: 350
+#     switch.fan:
+#       state: on
+#     cover.blinds:
+#       state: closed
+
 - name: "Evening Dusk to Dawn Lighting"
   id: evening_dusk_to_dawn_lighting
   icon: mdi:weather-sunset

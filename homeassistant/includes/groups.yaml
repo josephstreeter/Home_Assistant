@@ -1,3 +1,26 @@
+# This file contains Home Assistant group entities.
+# Define groups here to organize related entities for easier management and automation.
+# Groups can contain lights, sensors, switches, or any other entities that logically belong together.
+# Use groups to control multiple devices at once, create dashboard sections, or simplify automations.
+#
+# Example group configuration (commented out):
+#
+# living_room_lights:
+#   name: "Living Room Lights"
+#   icon: mdi:lightbulb-group
+#   entities:
+#     - light.living_room_main
+#     - light.living_room_lamp
+#     - light.living_room_accent
+#
+# all_sensors:
+#   name: "All Sensors"
+#   icon: mdi:sensor
+#   entities:
+#     - sensor.temperature_living_room
+#     - sensor.humidity_bedroom
+#     - binary_sensor.motion_hallway
+
 # Groups for Home Assistant
 # These organize entities for easier management and automation
 

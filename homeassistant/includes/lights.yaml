@@ -1,0 +1,21 @@
+# This file contains Home Assistant light entities.
+# Define lights here, including smart bulbs, LED strips, dimmers, and platform-specific lights.
+# Use integrations like MQTT, Zigbee, Z-Wave, or template lights for various lighting devices.
+# Configure light groups, color settings, brightness controls, and other lighting features.
+#
+# Example light configuration (commented out):
+#
+# - platform: mqtt
+#   name: "Living Room Lamp"
+#   state_topic: "home/living_room/lamp/state"
+#   command_topic: "home/living_room/lamp/set"
+#   brightness_state_topic: "home/living_room/lamp/brightness/state"
+#   brightness_command_topic: "home/living_room/lamp/brightness/set"
+#   color_temp_state_topic: "home/living_room/lamp/color_temp/state"
+#   color_temp_command_topic: "home/living_room/lamp/color_temp/set"
+#   payload_on: "ON"
+#   payload_off: "OFF"
+#   brightness_scale: 255
+#   availability_topic: "home/living_room/lamp/availability"
+#   payload_available: "online"
+#   payload_not_available: "offline"
