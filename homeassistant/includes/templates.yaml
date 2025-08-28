@@ -1,32 +1,25 @@
-# This file contains Home Assistant template sensors and binary sensors.
-# Use this file to define template-based entities, such as sensors and binary sensors,
+# This file contains Home Assistant template sensors.
+# Use this file to define template-based entities, such as sensors,
 # whose state, attributes, or availability are determined by Jinja2 templates.
-# Example templates are provided below (commented out).
+# Example templates are provided below.
 # Add your own template entities following the examples.
 
-# Example Home Assistant template (commented out)
+# Example Home Assistant template sensors (commented out)
 #
 # - sensor:
-#     - name: "Living Room Temperature"
+#     - name: "Living Room Temperature Rounded"
 #       state: >
-#         {{ states('sensor.living_room_temp') }}
+#         {{ states('sensor.living_room_temp') | float | round(1) }}
 #       unit_of_measurement: "°C"
+#       device_class: temperature
+#       availability: >
+#         {{ states('sensor.living_room_temp') not in ['unknown', 'unavailable'] }}
+#     
+#     - name: "Daily Energy Cost"
+#       state: >
+#         {{ (states('sensor.daily_energy') | float * 0.12) | round(2) }}
+#       unit_of_measurement: "$"
+#       icon: mdi:currency-usd
 #       attributes:
-#         friendly_name: "Living Room Temperature"
-#         device_class:
-
-# Binary sensor for weather alerts
-- binary_sensor:
-    - name: "Weather Alert Active"
-      state: >
-        {{ states('sensor.nws_alert_count') | int(0) > 0 }}
-      device_class: problem
-      availability: >
-        {{ states('sensor.nws_alert_count') not in ['unknown', 'unavailable'] }}
-      attributes:
-        alert_type: >
-          {{ states('sensor.nws_current_alert') }}
-        severity: >
-          {{ states('sensor.nws_alert_severity') }}
-        urgency: >
-          {{ states('sensor.nws_alert_urgency') }}
+#         energy_used: "{{ states('sensor.daily_energy') }} kWh"
+#

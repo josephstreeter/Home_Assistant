@@ -22,3 +22,33 @@
 #       device_class: problem
 #       value_template: "{{ states('sensor.temperature') | float > 85 }}"
 #       availability_template: "{{ states('sensor.temperature') not in ['unknown', 'unavailable'] }}"
+#
+# Weather alert binary sensor
+- platform: template
+  sensors:
+    weather_alert_active:
+      friendly_name: "Weather Alert Active"
+      device_class: problem
+      value_template: >
+        {{ states('sensor.nws_alert_count') | int(0) > 0 }}
+      availability_template: >
+        {{ states('sensor.nws_alert_count') not in ['unknown', 'unavailable'] }}
+      attribute_templates:
+        alert_type: >
+          {{ states('sensor.nws_current_alert') }}
+
+# Binary sensor for weather alerts
+- binary_sensor:
+  - name: "Weather Alert Active"
+    state: >
+      {{ states('sensor.nws_alert_count') | int(0) > 0 }}
+    device_class: problem
+    availability: >
+      {{ states('sensor.nws_alert_count') not in ['unknown', 'unavailable'] }}
+    attributes:
+      alert_type: >
+        {{ states('sensor.nws_current_alert') }}
+      severity: >
+        {{ states('sensor.nws_alert_severity') }}
+      urgency: >
+        {{ states('sensor.nws_alert_urgency') }}
