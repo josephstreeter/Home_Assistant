@@ -50,6 +50,8 @@ homeassistant:
   external_url: "https://your-external-url.example.com"
   allowlist_external_dirs:
     - "/config"
+  packages: 
+    dynamic_groups: !include includes/packages/dynamic_groups.yaml
 
 # Frontend Configuration
 # frontend:

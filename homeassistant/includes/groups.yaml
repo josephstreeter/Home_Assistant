@@ -24,16 +24,11 @@
 # Groups for Home Assistant
 # These organize entities for easier management and automation
 
-# All Lights
+# Lights
 
+# Windows
 
-# All Livingroom Lights
-
-# All Kitchen Lights
-
-# All Windows (update with your actual window sensor entities)
-
-# All Doors (update with your actual door sensor entities)
+# Doors
 
 # Temperature Sensors
 
