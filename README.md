@@ -118,6 +118,13 @@ This configuration has been simplified by migrating from the previous Zigbee2MQT
   - Groups lights, sensors, switches, and other logical device collections
   - Examples: Room lighting groups, sensor collections, device categories
 
+- **`includes/packages/dynamic_groups.yaml`** - Dynamic group management package
+  - Automatically creates and maintains groups based on device classes and entity types
+  - Template sensors that dynamically discover and track entities (lights, doors, windows)
+  - Automations that update groups on Home Assistant startup for real-time entity discovery
+  - Provides "All Lights", "All Doors", "All Windows", and "All Openings" groups
+  - Self-maintaining groups that automatically include new entities as they are added
+
 - **`includes/templates.yaml`** - Home Assistant template sensors and binary sensors
   - Jinja2 template-based entities for calculated states and attributes
   - Weather alerts, system monitoring, and derived sensor values
@@ -301,6 +308,8 @@ The deployment workflow performs the following steps:
         ├── sensors.yaml           # Template and platform sensors for monitoring
         ├── switches.yaml          # Switch entities (plugs, relays, devices)
         ├── templates.yaml         # Jinja2 template sensors and binary sensors
+        ├── packages/
+        │   └── dynamic_groups.yaml    # Self-maintaining dynamic entity groups
         └── dashboards/
             ├── system-monitor.yaml        # System monitoring dashboard
             ├── automation-control.yaml    # Automation control interface

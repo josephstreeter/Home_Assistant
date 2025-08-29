@@ -21,33 +21,33 @@ group:
 
 template:
   - sensor:
-      - name: "All Doors"
-        unique_id: dynamic_doors_list
-        state: "Available"
-        attributes:
-          entities: >
-            {{ states.binary_sensor | selectattr('attributes.device_class', 'in', ['door']) | map(attribute='entity_id') | list }}
+    - name: "All Doors"
+      unique_id: dynamic_doors_list
+      state: "{{ 'on' if states.binary_sensor | selectattr('attributes.device_class', 'in', ['door']) | selectattr('state', 'eq', 'on') | list | length > 0 else 'off' }}"
+      attributes:
+        entities: >
+          {{ states.binary_sensor | selectattr('attributes.device_class', 'in', ['door']) | map(attribute='entity_id') | list }}
 
-      - name: "All Windows"
-        unique_id: dynamic_windows_list
-        state: "Available"
-        attributes:
-          entities: >
-            {{ states.binary_sensor | selectattr('attributes.device_class', 'in', ['window']) | map(attribute='entity_id') | list }}
+    - name: "All Windows"
+      unique_id: dynamic_windows_list
+      state: "{{ 'on' if states.binary_sensor | selectattr('attributes.device_class', 'in', ['window']) | selectattr('state', 'eq', 'on') | list | length > 0 else 'off' }}"
+      attributes:
+        entities: >
+          {{ states.binary_sensor | selectattr('attributes.device_class', 'in', ['window']) | map(attribute='entity_id') | list }}
 
-      - name: "All Doors and Windows"
-        unique_id: dynamic_doors_and_windows_list
-        state: "Available"
-        attributes:
-          entities: >
-            {{ states.binary_sensor | selectattr('attributes.device_class', 'in', ['door', 'window']) | map(attribute='entity_id') | list }}
+    - name: "All Doors and Windows"
+      unique_id: dynamic_doors_and_windows_list
+      state: "{{ 'on' if states.binary_sensor | selectattr('attributes.device_class', 'in', ['door', 'window']) | selectattr('state', 'eq', 'on') | list | length > 0 else 'off' }}"
+      attributes:
+        entities: >
+          {{ states.binary_sensor | selectattr('attributes.device_class', 'in', ['door', 'window']) | map(attribute='entity_id') | list }}
 
-      - name: "All Lights"
-        unique_id: dynamic_light_list
-        state: "Available"
-        attributes:
-          entities: >
-            {{ states.light | map(attribute='entity_id') | list }}
+    - name: "All Lights"
+      unique_id: dynamic_light_list
+      state: "{{ 'on' if states.light | selectattr('state', 'eq', 'on') | list | length > 0 else 'off' }}"
+      attributes:
+        entities: >
+          {{ states.light | map(attribute='entity_id') | list }}
 
 automation:
   - id: "Update_dynamic_openings_group"

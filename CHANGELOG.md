@@ -7,7 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [3.0.0] - 2025-08-28
+## [1.5.0] - 2025-08-28
+
+### Added
+
+- Dynamic Groups package (`includes/packages/dynamic_groups.yaml`)
+  - Self-maintaining groups for lights, doors, windows, and all openings
+  - Template sensors that automatically discover entities by device class
+  - Startup automations that update groups with current entities
+- Comprehensive documentation and commented examples in all YAML include files
+- Weather alert binary sensor with proper template configuration
+- Enhanced GitHub Actions workflow to deploy includes directory
+- **GitHub Copilot Repository Instructions** (`COPILOT_INSTRUCTIONS.md`)
+  - Complete guide for using GitHub Copilot with this Home Assistant repository
+  - Best practices for configuration development and maintenance
+  - Code patterns, templates, and anti-patterns for Home Assistant YAML
+  - Integration guidelines for dynamic groups and modular architecture
+  - Development workflow and troubleshooting guide
+
+### Changed
+
+- Updated GitHub Actions deployment workflow to include complete includes directory
+- Moved blueprint file to correct location (`homeassistant/blueprints/script/`)
+- Fixed binary sensor configuration errors with proper platform declarations
+- Enhanced README with detailed descriptions of all include files and their purposes
+
+### Fixed
+
+- Resolved "Unresolved tag: !input" error by moving blueprint to correct directory
+- Fixed invalid binary sensor configuration missing required 'platform' key
+- Corrected file organization based on content type and purpose
+
+## [1.4.0] - 2025-08-28
 
 ### Changed - BREAKING CHANGES
 
@@ -36,7 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simplified architecture reduces container overhead and complexity
 - Improved reliability with native Home Assistant Zigbee support
 
-## [2.1.0] - 2025-08-18
+## [1.3.0] - 2025-08-18
 
 ### Added
 
@@ -52,7 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated dashboard access section with setup guide navigation
 - Improved repository structure documentation
 
-## [2.0.0] - 2025-08-17
+## [1.2.1] - 2025-08-17
 
 ### Added - Core Features
 
