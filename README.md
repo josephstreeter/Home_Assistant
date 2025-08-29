@@ -12,6 +12,53 @@ This repository contains a comprehensive Home Assistant smart home setup using D
 - **Modular Configuration**: Organized YAML includes for maintainability
 - **Weather Integration**: NWS weather alerts and monitoring
 
+## Getting Started
+
+### Creating a New Repository from This Template
+
+1. **Use GitHub Template Feature**:
+   - Click the "Use this template" button at the top of this repository
+   - Choose "Create a new repository"
+   - Name your repository (e.g., `my-homeassistant-setup`)
+   - Choose public or private visibility
+   - Click "Create repository from template"
+
+2. **Clone Your New Repository**:
+
+   ```bash
+   git clone https://github.com/yourusername/your-repo-name.git
+   cd your-repo-name
+   ```
+
+3. **Initial Configuration**:
+   - Update `secrets.yaml` with your specific values
+   - Modify `docker-compose.yml` environment variables (timezone, device paths)
+   - Customize entity configurations in `homeassistant/includes/` files
+   - Update documentation with your specific setup details
+
+4. **Hardware Setup**:
+   - Connect your Zigbee USB coordinator to `/dev/ttyUSB0` (or update device path in docker-compose.yml)
+   - Ensure Docker and Docker Compose are installed on your target system
+
+5. **Deployment Options**:
+   - **Local Development**: Follow Manual Deployment steps below
+   - **Production with CI/CD**: Configure GitHub Actions self-hosted runner following Prerequisites section
+
+### Quick Start Deployment
+
+For immediate testing and setup:
+
+```bash
+# Start the stack
+docker-compose up -d
+
+# Check logs
+docker-compose logs -f ha
+
+# Access Home Assistant
+# Navigate to http://localhost:8123
+```
+
 ## Services
 
 ### 1. Home Assistant
@@ -209,6 +256,174 @@ The deployment workflow performs the following steps:
 - **Directory Structure**: Runner must have access to `/home/docker/homeassistant/` deployment directory
 - **Docker Access**: Runner user must have Docker permissions for container management
 - **Network Access**: Runner needs connectivity to Docker daemon and container registry
+
+#### Setting Up Self-Hosted GitHub Actions Runner
+
+Follow these steps to configure a self-hosted runner for automated deployment:
+
+##### 1. Prepare the Host System
+
+```bash
+# Create deployment directory
+sudo mkdir -p /home/docker/homeassistant
+sudo chown $USER:$USER /home/docker/homeassistant
+
+# Install Docker and Docker Compose (if not already installed)
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker $USER
+
+# Install Docker Compose from apt package manager
+sudo apt update
+sudo apt install docker-compose-plugin
+
+# Logout and login again to apply group changes
+```
+
+##### 2. Create GitHub Actions Runner
+
+1. **Navigate to Repository Settings**:
+   - Go to your repository on GitHub
+   - Click "Settings" → "Actions" → "Runners"
+   - Click "New self-hosted runner"
+
+2. **Download and Configure Runner**:
+
+   ```bash
+   # Create runner directory
+   mkdir actions-runner && cd actions-runner
+   
+   # Download the latest runner package (Linux x64)
+   curl -o actions-runner-linux-x64-2.311.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.311.0/actions-runner-linux-x64-2.311.0.tar.gz
+   
+   # Extract the installer
+   tar xzf ./actions-runner-linux-x64-2.311.0.tar.gz
+   
+   # Configure the runner (use token from GitHub)
+   ./config.sh --url https://github.com/yourusername/your-repo-name --token YOUR_GITHUB_TOKEN
+   ```
+
+3. **Configure Runner as Service**:
+
+   ```bash
+   # Install runner as a service
+   sudo ./svc.sh install
+   
+   # Start the runner service
+   sudo ./svc.sh start
+   
+   # Check service status
+   sudo ./svc.sh status
+   ```
+
+##### 3. Configure Runner Environment
+
+Create a runner-specific configuration:
+
+```bash
+# Create environment file for runner
+sudo tee /home/docker/homeassistant/.env << EOF
+# Docker Compose Environment
+COMPOSE_PROJECT_NAME=homeassistant
+TZ=America/New_York
+# Add any other environment variables needed
+EOF
+
+# Set proper permissions
+sudo chown $USER:$USER /home/docker/homeassistant/.env
+```
+
+##### 4. Test Runner Configuration
+
+```bash
+# Navigate to deployment directory
+cd /home/docker/homeassistant
+
+# Test Docker access
+docker --version
+docker-compose --version
+
+# Test directory permissions
+touch test-file && rm test-file
+
+# Verify runner is registered
+# Check GitHub repository Settings → Actions → Runners
+```
+
+##### 5. Security Considerations
+
+```bash
+# Create dedicated user for runner (optional but recommended)
+sudo useradd -m -s /bin/bash github-runner
+sudo usermod -aG docker github-runner
+
+# Set up SSH key access if needed
+sudo -u github-runner ssh-keygen -t ed25519 -C "github-runner@$(hostname)"
+
+# Configure firewall (adjust as needed)
+sudo ufw allow ssh
+sudo ufw allow 8123/tcp  # Home Assistant
+sudo ufw enable
+```
+
+##### 6. Runner Maintenance
+
+```bash
+# Update runner (when new versions are available)
+cd actions-runner
+sudo ./svc.sh stop
+./config.sh remove --token YOUR_REMOVAL_TOKEN
+# Download and extract new version
+./config.sh --url https://github.com/yourusername/your-repo-name --token YOUR_NEW_TOKEN
+sudo ./svc.sh install
+sudo ./svc.sh start
+
+# View runner logs
+sudo journalctl -u actions.runner.* -f
+
+# Restart runner service
+sudo ./svc.sh stop
+sudo ./svc.sh start
+```
+
+##### 7. Troubleshooting Self-Hosted Runner
+
+Common issues and solutions:
+
+```bash
+# Runner not appearing in GitHub
+# Check runner status
+sudo ./svc.sh status
+
+# View detailed logs
+cd actions-runner
+tail -f _diag/Runner_*.log
+
+# Docker permission issues
+sudo usermod -aG docker github-runner
+# Logout and login again
+
+# Deployment directory issues
+sudo chown -R github-runner:github-runner /home/docker/homeassistant
+sudo chmod 755 /home/docker/homeassistant
+
+# Network connectivity issues
+# Test GitHub connectivity
+curl -I https://github.com
+# Test Docker Hub connectivity
+docker pull hello-world
+```
+
+##### 8. Multiple Runners (Optional)
+
+For high availability or load distribution:
+
+```bash
+# Create additional runner directories
+mkdir actions-runner-2 && cd actions-runner-2
+# Repeat configuration steps with different runner names
+./config.sh --url https://github.com/yourusername/your-repo-name --token YOUR_TOKEN --name "runner-2"
+```
 
 ### Manual Deployment
 
