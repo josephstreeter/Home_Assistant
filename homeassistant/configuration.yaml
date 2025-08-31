@@ -53,6 +53,7 @@ homeassistant:
   packages: 
     dynamic_groups: !include includes/packages/dynamic_groups.yaml
     weather_alerts: !include includes/packages/weather._alerts.yaml
+    notifications: !include includes/packages/notifications.yaml
 
 # Frontend Configuration
 # frontend:

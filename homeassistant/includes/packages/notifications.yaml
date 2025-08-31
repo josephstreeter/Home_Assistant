@@ -1,0 +1,65 @@
+# Notifications Package
+# This package contains all notification-related configuration
+
+notify:
+  # Persistent notifications for important system messages
+  - platform: persistent_notification
+    name: "system_notifications"
+
+# Input text for custom notification messages
+input_text:
+  custom_notification:
+    name: "Custom Notification Message"
+    max: 255
+    icon: mdi:message-text
+
+# Automation for custom notifications
+automation:
+  - id: 'send_custom_notification'
+    alias: 'Send Custom Notification'
+    description: 'Send a custom notification message'
+    trigger:
+      - platform: state
+        entity_id: input_text.custom_notification
+    condition:
+      - condition: template
+        value_template: "{{ trigger.to_state.state | length > 0 }}"
+    action:
+      - service: notify.persistent_notification
+        data:
+          message: "{{ states('input_text.custom_notification') }}"
+          title: "Custom Message"
+          notification_id: "custom_message"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.custom_notification
+        data:
+          value: ""
+    mode: single
+
+# Script for system status notifications
+script:
+  send_system_status:
+    alias: "Send System Status"
+    description: "Send comprehensive system status notification"
+    sequence:
+      - service: notify.persistent_notification
+        data:
+          message: >
+            System Status Report:
+            
+            🏠 Home Mode: {{ states('sensor.home_occupancy') }}
+            🌡️ Indoor Temp: {{ state_attr('climate.thermostat', 'current_temperature') }}°F
+            💧 Indoor Humidity: {{ state_attr('climate.thermostat', 'humidity') }}%
+            🎯 Comfort Level: {{ states('sensor.comfort_level') }}
+            
+            💡 Lights: {{ expand('group.all_lights') | selectattr('state', 'eq', 'on') | list | count }} on
+            🚪 Doors: {{ state_attr('binary_sensor.any_door_open', 'open_doors') or 'All Closed' }}
+            🪟 Windows: {{ state_attr('binary_sensor.any_window_open', 'open_windows') or 'All Closed' }}
+            
+            ⚡ Energy Waste: {{ states('sensor.energy_waste_alert') }}
+            🌤️ Weather Alerts: {{ states('sensor.nws_alert_count') }}
+            
+            Last Updated: {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+          title: "System Status"
+          notification_id: "system_status"
