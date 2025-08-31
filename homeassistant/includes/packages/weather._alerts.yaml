@@ -1,0 +1,176 @@
+sensor:
+  # NWS Weather Alert Sensors
+  - platform: rest
+    resource: https://api.weather.gov/alerts/active/count
+    name: NWS Alert Count Raw
+    value_template: >
+      {% if value_json is defined and value_json.zones is defined %}
+        {% set wiz057 = value_json.zones.WIZ057 | default(0) %}
+        {% set wiz083 = value_json.zones.WIZ083 | default(0) %}
+        {{ wiz057 + wiz083 }}
+      {% else %}
+        0
+      {% endif %}
+    headers:
+      User-Agent: "HomeAssistant/2.0 (github.com/home-assistant/core)"
+      Accept: application/ld+json
+    scan_interval: 300
+    timeout: 30
+    verify_ssl: true
+    unit_of_measurement: "alerts"
+    icon: mdi:alert-circle
+
+  - platform: rest
+    resource: https://api.weather.gov/alerts/active?zone=WIZ057,WIZ083
+    name: NWS Alert Event Raw
+    value_template: >
+      {% if value_json is defined and value_json.features is defined and value_json.features | length > 0 %}
+        {{ value_json.features[0].properties.event }}
+      {% else %}
+        None
+      {% endif %}
+    json_attributes_path: "$"
+    json_attributes:
+      - features
+    headers:
+      User-Agent: "HomeAssistant/2.0 (github.com/home-assistant/core)"
+      Accept: application/geo+json
+    scan_interval: 300
+    timeout: 30
+    verify_ssl: true
+    icon: mdi:weather-lightning
+
+  # Template sensors for better data processing
+  - platform: template
+    sensors:
+      nws_alert_count:
+        friendly_name: "Active Weather Alerts"
+        value_template: "{{ states('sensor.nws_alert_count_raw') | int(0) }}"
+        unit_of_measurement: "alerts"
+        icon_template: >
+          {% set count = states('sensor.nws_alert_count_raw') | int(0) %}
+          {% if count > 0 %}
+            mdi:alert
+          {% else %}
+            mdi:check-circle
+          {% endif %}
+        availability_template: >
+          {{ states('sensor.nws_alert_count_raw') not in ['unknown', 'unavailable'] }}
+
+      nws_current_alert:
+        friendly_name: "Current Weather Alert"
+        value_template: >
+          {% set event = states('sensor.nws_alert_event_raw') %}
+          {% if event not in ['None', 'unknown', 'unavailable'] %}
+            {{ event }}
+          {% else %}
+            No Active Alerts
+          {% endif %}
+        icon_template: >
+          {% set event = states('sensor.nws_alert_event_raw') %}
+          {% if event not in ['None', 'unknown', 'unavailable'] %}
+            mdi:weather-lightning
+          {% else %}
+            mdi:check-circle
+          {% endif %}
+        availability_template: >
+          {{ states('sensor.nws_alert_event_raw') not in ['unknown', 'unavailable'] }}
+
+      nws_alert_severity:
+        friendly_name: "Weather Alert Severity"
+        value_template: >
+          {% set features = state_attr('sensor.nws_alert_event_raw', 'features') %}
+          {% if features and features | length > 0 %}
+            {{ features[0].properties.severity | default('Unknown') }}
+          {% else %}
+            None
+          {% endif %}
+        availability_template: >
+          {{ state_attr('sensor.nws_alert_event_raw', 'features') is not none }}
+
+      nws_alert_urgency:
+        friendly_name: "Weather Alert Urgency"
+        value_template: >
+          {% set features = state_attr('sensor.nws_alert_event_raw', 'features') %}
+          {% if features and features | length > 0 %}
+            {{ features[0].properties.urgency | default('Unknown') }}
+          {% else %}
+            None
+          {% endif %}
+        availability_template: >
+          {{ state_attr('sensor.nws_alert_event_raw', 'features') is not none }}
+
+      nws_alert_headline:
+        friendly_name: "Weather Alert Headline"
+        value_template: >
+          {% set features = state_attr('sensor.nws_alert_event_raw', 'features') %}
+          {% if features and features | length > 0 %}
+            {{ features[0].properties.headline | default('Alert Active') }}
+          {% else %}
+            No alerts
+          {% endif %}
+        availability_template: >
+          {{ state_attr('sensor.nws_alert_event_raw', 'features') is not none }}
+
+      nws_alert_description:
+        friendly_name: "Weather Alert Description"
+        value_template: >
+          {% set features = state_attr('sensor.nws_alert_event_raw', 'features') %}
+          {% if features and features | length > 0 %}
+            {{ features[0].properties.description | default('No description available') | truncate(255) }}
+          {% else %}
+            No alerts
+          {% endif %}
+        availability_template: >
+          {{ state_attr('sensor.nws_alert_event_raw', 'features') is not none }}
+
+      nws_alert_effective_time:
+        friendly_name: "Weather Alert Effective Time"
+        value_template: >
+          {% set features = state_attr('sensor.nws_alert_event_raw', 'features') %}
+          {% if features and features | length > 0 %}
+            {% set effective = features[0].properties.effective %}
+            {% if effective %}
+              {{ as_timestamp(effective) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}
+            {% else %}
+              Unknown
+            {% endif %}
+          {% else %}
+            None
+          {% endif %}
+        availability_template: >
+          {{ state_attr('sensor.nws_alert_event_raw', 'features') is not none }}
+
+      nws_alert_expires_time:
+        friendly_name: "Weather Alert Expires Time"
+        value_template: >
+          {% set features = state_attr('sensor.nws_alert_event_raw', 'features') %}
+          {% if features and features | length > 0 %}
+            {% set expires = features[0].properties.expires %}
+            {% if expires %}
+              {{ as_timestamp(expires) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}
+            {% else %}
+              Unknown
+            {% endif %}
+          {% else %}
+            None
+          {% endif %}
+        availability_template: >
+          {{ state_attr('sensor.nws_alert_event_raw', 'features') is not none }}
+
+binary_sensor:
+  # Weather Alert Binary Sensor
+  - platform: template
+    sensors:
+      nws_alert_active:
+        friendly_name: "Weather Alert Active"
+        value_template: "{{ states('sensor.nws_alert_count') | int(0) > 0 }}"
+        device_class: safety
+        icon_template: >
+          {% if states('sensor.nws_alert_count') | int(0) > 0 %}
+            mdi:alert
+          {% else %}
+            mdi:check-circle
+          {% endif %}
+        availability_template: >
+          {{ states('sensor.nws_alert_count') not in ['unknown', 'unavailable'] }}
